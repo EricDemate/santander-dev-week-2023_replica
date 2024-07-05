@@ -1,6 +1,9 @@
 package me.dio.domain.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.math.BigDecimal;
 
@@ -11,55 +14,22 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Account number is mandatory")
+    @Size(min = 10, max = 20, message = "Account number must be between 10 and 20 characters")
     @Column(unique = true)
     private String number;
 
+    @NotBlank(message = "Agency is mandatory")
+    @Size(min = 5, max = 10, message = "Agency must be between 5 and 10 characters")
     private String agency;
 
+    @DecimalMin(value = "0.0", inclusive = true, message = "Balance must be positive")
     @Column(precision = 13, scale = 2)
     private BigDecimal balance;
 
+    @DecimalMin(value = "0.0", inclusive = true, message = "Limit must be positive")
     @Column(name = "additional_limit", precision = 13, scale = 2)
     private BigDecimal limit;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNumber() {
-        return number;
-    }
-
-    public void setNumber(String number) {
-        this.number = number;
-    }
-
-    public String getAgency() {
-        return agency;
-    }
-
-    public void setAgency(String agency) {
-        this.agency = agency;
-    }
-
-    public BigDecimal getBalance() {
-        return balance;
-    }
-
-    public void setBalance(BigDecimal balance) {
-        this.balance = balance;
-    }
-
-    public BigDecimal getLimit() {
-        return limit;
-    }
-
-    public void setLimit(BigDecimal limit) {
-        this.limit = limit;
-    }
-
+    // Getters and setters...
 }

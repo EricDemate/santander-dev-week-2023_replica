@@ -1,6 +1,7 @@
 package me.dio.controller;
 
 import me.dio.domain.model.User;
+import me.dio.dto.UserDTO;
 import me.dio.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,18 +20,18 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> findById(@PathVariable Long id) {
-       var user = userService.findById(id);
-       return ResponseEntity.ok(user);
+    public ResponseEntity<UserDTO> findById(@PathVariable Long id) {
+        var user = userService.findById(id);
+        return ResponseEntity.ok(UserDTO.fromEntity(user));
     }
 
     @PostMapping
-    public ResponseEntity<User> create(@RequestBody User userToCreate) {
+    public ResponseEntity<UserDTO> create(@RequestBody User userToCreate) {
         var userCreated = userService.create(userToCreate);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(userCreated.getId())
                 .toUri();
-        return ResponseEntity.created(location).body(userCreated);
+        return ResponseEntity.created(location).body(UserDTO.fromEntity(userCreated));
     }
 }
